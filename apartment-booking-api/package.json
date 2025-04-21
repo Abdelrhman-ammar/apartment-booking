@@ -1,0 +1,15 @@
+{
+  "name": "apartment-booking-api",
+  "version": "1.0.0",
+  "description": "Apartment Booking Api",
+  "license": "MIT",
+  "author": "Abdelrhman Ammar",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
