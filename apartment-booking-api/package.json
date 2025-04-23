@@ -1,26 +1,37 @@
 {
-  "name": "apartment-booking-api",
+  "name": "apartment-booking-app",
   "version": "1.0.0",
-  "description": "Apartment Booking Api",
+  "description": "Apartment Booking App",
+  "homepage": "https://github.com/Abdelrhman-ammar/apartment-booking#readme",
+  "bugs": {
+    "url": "https://github.com/Abdelrhman-ammar/apartment-booking/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Abdelrhman-ammar@github.com/Abdelrhman-ammar/apartment-booking.git"
+  },
   "license": "MIT",
   "author": "Abdelrhman Ammar",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "build": "rimraf dist && npx tsc",
-    "prestart": "npm run build",
-    "start": "node dist/index.js",
-    "preserve": "npm run build",
-    "serve": "npx tsc -w & nodemon dist/index.js"
+    "serve": "nodemon index.js"
+  },
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
   },
   "dependencies": {
-    "@types/express": "^5.0.1",
-    "@types/node": "^22.14.1",
+    "@prisma/client": "^6.6.0",
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.8.3"
+    "nodemon": "^3.1.9",
+    "prisma": "^6.6.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
