@@ -1,14 +1,26 @@
 import { hashPassword, comparePassword } from '../utils/hash.js';
 
+export interface UserParams {
+  name: string;
+  email: string;
+  password?: string;
+  role?: 'USER' | 'ADMIN' | 'OWNER';
+}
+
 export default class User {
-  constructor({ name, email, password, role = 'USER' }) {
+  name: string;
+  email: string;
+  password?: string;
+  role?: 'USER' | 'ADMIN' | 'OWNER';
+
+  constructor({ name, email, password = '', role = 'USER' }: UserParams) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.role = role;
   }
 
-  static validate({ name, email, password, role }) {
+  static validate({ name, email, password, role }: UserParams): void {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const validRoles = ['USER', 'ADMIN', 'OWNER'];
 
@@ -29,11 +41,13 @@ export default class User {
     }
   }
 
-  async hashPassword() {
+
+  async hashPassword(): Promise<void> {
+    if(!this.password) {return}
     this.password = await hashPassword(this.password);
   }
 
-  toObject() {
+  toObject(): UserParams{
     return {
       name: this.name,
       email: this.email,
@@ -42,7 +56,7 @@ export default class User {
     };
   }
 
-  serializedObject() {
+  serializedObject(): UserParams{
     return {
       name: this.name,
       email: this.email,
