@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { UserService } from "../services/user.service.js";
-import { generateToken } from '../utils/jwt.js';
-import { comparePassword } from '../utils/hash.js'
-import { generateResponse, sendGeneralErrorResponse } from "../utils/response.js";
-import { statusCodes } from "../utils/status-responses.js";
+import { UserService } from "../services/user.service";
+import { generateToken } from '../utils/jwt';
+import { comparePassword } from '../utils/hash'
+import { generateResponse, sendGeneralErrorResponse } from "../utils/response";
+import { statusCodes } from "../utils/status-responses";
 
 export const register = async (req: Request, res: Response) => {
   const userService = new UserService();

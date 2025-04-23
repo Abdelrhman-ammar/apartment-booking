@@ -1,3 +1,4 @@
 apartment-booking-api/node_modules/
 apartment-booking-api/generated/
+apartment-booking-api/dist/
 .git-credentials

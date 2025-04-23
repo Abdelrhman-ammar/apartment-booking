@@ -1,4 +1,4 @@
-import { hashPassword, comparePassword } from '../utils/hash.js';
+import { hashPassword, comparePassword } from '../utils/hash';
 
 export interface UserParams {
   name: string;

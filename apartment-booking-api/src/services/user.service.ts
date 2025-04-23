@@ -1,8 +1,8 @@
 import prisma from "../prisma/client";
-import User, { UserParams } from "../models/user.js";
+import User, { UserParams } from "../models/user";
 import { hashPassword } from "../utils/hash.js";
-import { generateResponse } from "../utils/response.js";
-import { statusCodes } from "../utils/status-responses.js";
+import { generateResponse } from "../utils/response";
+import { statusCodes } from "../utils/status-responses";
 
 export class UserService {
   async getAllUsers() {

@@ -1,4 +1,5 @@
-import { Response } from 'express'; // Make sure to import Express types
+import { Response } from 'express';
+import { statusCodes } from './status-responses';
 
 export interface ResponseObject {
   success: boolean;
@@ -29,7 +30,7 @@ export const generateResponse = ({ status, message, error, data }: ResponseParam
 };
 
 export const sendGeneralErrorResponse = (res: Response): void => {
-  const status = 500; // HTTP statusCodes.INTERNAL_SERVER_ERROR
+  const status = statusCodes.INTERNAL_SERVER_ERROR;
   res.status(status).json(
     generateResponse({
       status,

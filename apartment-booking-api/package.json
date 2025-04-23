@@ -15,7 +15,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon index.js"
+    "serve": "nodemon dist/index.js"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"

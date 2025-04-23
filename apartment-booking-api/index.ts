@@ -12,7 +12,7 @@ app.get('/', (req, res) => {
   res.send('Hello from Express + Prisma + TypeScript!')
 })
 
-const PORT = process.env.API_PORT || 3000
+const PORT = process.env.API_PORT || 8000
 app.listen(PORT, async () => {
   await connectToDatabase()
   console.log(`Server is running on http://localhost:${PORT}`)
