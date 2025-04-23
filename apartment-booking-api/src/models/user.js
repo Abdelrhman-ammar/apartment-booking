@@ -46,6 +46,7 @@ export default class User {
     return {
       name: this.name,
       email: this.email,
+      role: this.role
     };
   }
 }

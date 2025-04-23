@@ -1,3 +1,4 @@
+import { statusCodes } from "../utils/status-responses.js";
 export const generateResponse = ({status, message = null, error = null, data}) => {
     const response = {
         success: status < 300? true : false,
@@ -8,3 +9,11 @@ export const generateResponse = ({status, message = null, error = null, data}) =
     if (data) response.data = data;
     return response
 };
+
+export const sendGeneralErrorResponse = (res) => {
+    const status = statusCodes.INTERNAL_SERVER_ERROR
+    res.status(status).json(generateResponse({
+        status,
+        error: "General Error"
+    }));
+}
