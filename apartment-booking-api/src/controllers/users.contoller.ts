@@ -4,12 +4,18 @@ import { generateToken } from '../utils/jwt';
 import { comparePassword } from '../utils/hash'
 import { generateResponse, sendGeneralErrorResponse } from "../utils/response";
 import { statusCodes } from "../utils/status-responses";
+import { ValidationObject } from "../types/validation-object";
 
 export const register = async (req: Request, res: Response) => {
   const userService = new UserService();
     try {
-      const response = await userService.createUser(req.body);
-      res.status(response.status).json(response);
+      const userData = req.body
+      const validationObject: ValidationObject = UserService.validate(userData);
+      let response = validationObject.response;
+      if (validationObject.valid) {
+        response = await userService.createUser(userData);
+      }
+      res.status(response?.status || 500).json(response);
     } catch (error) {
       sendGeneralErrorResponse(res)
       console.error(error)

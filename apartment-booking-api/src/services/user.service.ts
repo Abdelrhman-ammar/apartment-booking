@@ -1,10 +1,19 @@
 import prisma from "../prisma/client";
 import User, { UserParams } from "../models/user";
 import { hashPassword } from "../utils/hash.js";
-import { generateResponse } from "../utils/response";
+import { generateResponse, ResponseObject } from "../utils/response";
 import { statusCodes } from "../utils/status-responses";
+import {ValidationObject} from "../types/validation-object";
 
 export class UserService {
+  static validate(userData: UserParams): ValidationObject {
+    const error = User.validate(userData);
+    return {
+      valid: !error,
+      response: error? generateResponse({status: statusCodes.BAD_REQUEST, error}) : null
+    };
+  }
+
   async getAllUsers() {
     const users = await this.getAllUserObjects();
     return generateResponse({
@@ -67,8 +76,10 @@ export class UserService {
 
   async createUserObject(userData: UserParams) {
     if(!userData.password) { return null}
-    userData.password = await hashPassword(userData.password);
-    const created = await prisma.user.create({ data: userData });
+    const password = await hashPassword(userData.password);
+    userData.password = password
+    const userInput = { ...userData, password };
+    const created = await prisma.user.create({ data: userInput });
     return new User(created);
   }
 }
