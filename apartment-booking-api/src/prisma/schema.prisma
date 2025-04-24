@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../generated/prisma"
 }
 
 datasource db {
@@ -24,9 +23,32 @@ model User {
   id        Int      @id @default(autoincrement())
   name      String
   email     String   @unique
+  phone     String   @unique
   password  String
   role      UserRole   @default(USER)
+  apartments Apartment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Apartment {
+  id          Int      @id @default(autoincrement())
+  unitName    String
+  unitNumber  String
+  project     String
+  description String
+  price       Float
+  location    String
+  bedrooms    Int
+  bathrooms   Int
+  area        Float
+  available   Boolean   @default(true)
+  features    String[]  @default([])
+  images      String[]  @default([])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  ownerId     Int
+  owner       User      @relation(fields: [ownerId], references: [id])
+  @@index([unitName, unitNumber, project])
 }
 
