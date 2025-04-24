@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import User, {UserParams} from "./user";
 
 export interface ApartmentParams {
@@ -15,7 +16,7 @@ export interface ApartmentParams {
     features?: string[];
     images?: string[];
     ownerId: number;
-    owner: UserParams;
+    owner?: UserParams;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -35,7 +36,7 @@ export default class Apartment {
     features: string[];
     images: string[];
     ownerId: number;
-    owner: User;
+    owner?: User;
     createdAt?: Date;
     updatedAt?: Date;
 
@@ -54,9 +55,11 @@ export default class Apartment {
         this.features = params.features ?? [];
         this.images = params.images ?? [];
         this.ownerId = params.ownerId;
-        this.owner = new User(params.owner);
         this.createdAt = params.createdAt;
         this.updatedAt = params.updatedAt;
+        if (params.owner) {
+            this.owner = new User(params.owner);
+        }
     }
 
     static validate(data: ApartmentParams): string | null {
@@ -91,15 +94,33 @@ export default class Apartment {
         return null;
     }
 
-    toObject(): ApartmentParams {
-        return { ...this };
+    toUpdateObject(): Prisma.ApartmentUpdateInput {
+        return {
+            ...this.getCommonProperties(),
+            owner: { connect: { id: this.ownerId } },
+        };
     }
-
+    
+    toCreateObject(): Prisma.ApartmentCreateInput {
+        return {
+            ...this.getCommonProperties(),
+            owner: { connect: { id: this.ownerId } },
+        };
+    }
+    
     serializedObject(): Partial<ApartmentParams> {
         return {
             id: this.id,
+            ...this.getCommonProperties(),
+            owner: this.owner?.serializedObject(),
+        };
+    }
+
+    private getCommonProperties() {
+        return {
             unitName: this.unitName,
             unitNumber: this.unitNumber,
+            description: this.description,
             project: this.project,
             price: this.price,
             location: this.location,
@@ -109,7 +130,6 @@ export default class Apartment {
             available: this.available,
             images: this.images,
             features: this.features,
-            owner: this.owner.serializedObject(),
         };
     }
 }

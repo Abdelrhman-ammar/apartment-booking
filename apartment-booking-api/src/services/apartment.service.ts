@@ -48,13 +48,17 @@ export class ApartmentService {
     });
   }
 
-  async updateApartment(id: number, data: Partial<ApartmentParams>, userId: number, userRole: string) {
+  async updateApartment(id: number, data: ApartmentParams, userId: number, userRole: string) {
     const whereCondition = userRole === 'ADMIN' ? { id } : { id, ownerId: userId };
     const apartment = await prisma.apartment.findUnique({ where: whereCondition });
     if(!apartment) {
       return this.handleAuth(id);
     }
-    const updated = await prisma.apartment.update({ where: { id }, data, include: { owner: true }});
+    const object = new Apartment(apartment);
+    const updated = await prisma.apartment.update({ where: { id },
+      data: object.toUpdateObject(),
+      include: { owner: true }}
+    );
     return generateResponse({
       status: statusCodes.OK,
       data: new Apartment(updated).serializedObject(),
@@ -96,8 +100,9 @@ export class ApartmentService {
 
   async createApartmentObject(data: ApartmentParams) {
     Apartment.validate(data);
-    const apartment = new Apartment(data);
-    const created = await prisma.apartment.create({ data: apartment.toObject() });
+    const apartment = new Apartment(data)
+    delete apartment.owner
+    const created = await prisma.apartment.create({ data: apartment.toCreateObject() });
     return new Apartment(created);
   }
 }
