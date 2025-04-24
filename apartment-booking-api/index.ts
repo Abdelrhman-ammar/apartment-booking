@@ -12,13 +12,13 @@ app.use(express.json())
 // ----------------- all api routes -----------------------
 app.use('/api/users', userRoutes)
 app.use('/api/apartments', apartmentRoutes)
+app.get('/', (req, res) => {
+  res.send('Hello from Express + Prisma + TypeScript!')
+})
 
 // ----------------- notfound api routes ------------------
 app.use('/', notFoundEndpoint);
 
-// app.get('/', (req, res) => {
-//   res.send('Hello from Express + Prisma + TypeScript!')
-// })
 
 const PORT = process.env.API_PORT || 8000
 app.listen(PORT, async () => {

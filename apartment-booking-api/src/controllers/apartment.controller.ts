@@ -44,6 +44,17 @@ export const getApartment = async (req: Request, res: Response) => {
   }
 };
 
+export const filterApartments = async (req: Request, res: Response) => {
+  try {
+    const filters = req.body;
+    const response = await apartmentService.filterApartments(filters);
+    res.status(response.status).json(response);
+  } catch (error) {
+    sendGeneralErrorResponse(res);
+    console.error(error);
+  }
+};
+
 export const updateApartment = async (req: Request, res: Response) => {
   try {
     const apartmentId = Number(req.params.id);

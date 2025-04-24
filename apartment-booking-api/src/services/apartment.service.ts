@@ -48,6 +48,36 @@ export class ApartmentService {
     });
   }
 
+  async filterApartments(filters: any) {
+    const where: any = {};
+  
+    if (filters.unitName) where.unitName = { contains: filters.unitName, mode: 'insensitive' };
+    if (filters.location) where.location = { contains: filters.location, mode: 'insensitive' };
+    if (filters.minPrice) where.price = { gte: Number(filters.minPrice) };
+    if (filters.maxPrice) where.price = { ...where.price, lte: Number(filters.maxPrice) };
+    if (filters.bedrooms) where.bedrooms = Number(filters.bedrooms);
+    if (filters.bathrooms) where.bathrooms = Number(filters.bathrooms);
+    if (filters.available !== undefined) where.available = filters.available === true || filters.available === 'true';
+    if (filters.minArea) where.area = { gte: Number(filters.minArea) };
+    if (filters.maxArea) where.area = { ...where.area, lte: Number(filters.maxArea) };
+    if (filters.features) {
+      const featureArray = Array.isArray(filters.features)
+        ? filters.features
+        : filters.features.split(',');
+      where.features = { hasSome: featureArray };
+    }
+  
+    const apartments = await prisma.apartment.findMany({
+      where,
+      include: { owner: true },
+    });
+  
+    return generateResponse({
+      status: statusCodes.OK,
+      data: apartments.map((a: any) => new Apartment(a).serializedObject()),
+    });
+  }
+
   async updateApartment(id: number, data: ApartmentParams, userId: number, userRole: string) {
     const whereCondition = userRole === 'ADMIN' ? { id } : { id, ownerId: userId };
     const apartment = await prisma.apartment.findUnique({ where: whereCondition });
