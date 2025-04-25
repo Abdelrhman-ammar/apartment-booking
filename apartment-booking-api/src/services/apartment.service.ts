@@ -1,5 +1,5 @@
 import prisma from '../prisma/client';
-import Apartment, { ApartmentParams } from '../models/apartment';
+import Apartment, { ApartmentParams, ApartmentSmallSelect } from '../models/apartment';
 import { generateResponse } from '../utils/response';
 import { statusCodes } from '../utils/status-responses';
 import { ValidationObject } from "../types/validation-object";
@@ -19,7 +19,7 @@ export class ApartmentService {
     const apartments = await this.getAllApartmentObjects(page, limit);
     return generateResponse({
       status: statusCodes.OK,
-      data: apartments.map((a: Apartment) => a.serializedObject()),
+      data: apartments.map((a: Apartment) => a.miniSerializedObject()),
     });
   }
 
@@ -117,8 +117,8 @@ export class ApartmentService {
 
   async getAllApartmentObjects(page: number, limit: number) {
     const skip = (page - 1) * limit;
-    const apartments = await prisma.apartment.findMany({ skip, take: limit, include: { owner: true } });
-    return apartments.map((a: ApartmentParams) => new Apartment(a));
+    const apartments = await prisma.apartment.findMany({ skip, take: limit, select: ApartmentSmallSelect });
+    return apartments.map((a) => Apartment.fromSmallData(a));
   }
 
   async getApartmentObjectById(id: number) {

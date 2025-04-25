@@ -1,5 +1,31 @@
 import { Prisma } from "@prisma/client";
 import User, {UserParams} from "./user";
+export const ApartmentSmallSelect: Prisma.ApartmentSelect = {
+    id: true,
+    unitName: true,
+    project: true,
+    location: true,
+    price: true,
+    images: true,
+    available: true
+};
+
+const defaultApartmentParams: ApartmentParams = {
+    id: 0,
+    unitName: '',
+    unitNumber: '',
+    project: '',
+    description: '',
+    location: '',
+    price: 0,
+    bedrooms: 0,
+    bathrooms: 0,
+    area: 0,
+    images: [],
+    available: true,
+    ownerId: 0,
+    owner: undefined,
+};
 
 export interface ApartmentParams {
     id?: number;
@@ -62,6 +88,11 @@ export default class Apartment {
         }
     }
 
+    // small constructor
+    static fromSmallData(data: Partial<ApartmentParams>) {
+        return new Apartment({ ...defaultApartmentParams, ...data });
+      }
+
     static validate(data: ApartmentParams): string | null {
         const requiredFields: (keyof ApartmentParams)[] = [
             'unitName',
@@ -113,6 +144,16 @@ export default class Apartment {
             id: this.id,
             ...this.getCommonProperties(),
             owner: this.owner?.serializedObject(),
+        };
+    }
+
+    miniSerializedObject(): Partial<ApartmentParams> {
+        return {
+            id: this.id,
+            unitName: this.unitName,
+            location: this.location,
+            price: this.price,
+            images: this.images,
         };
     }
 
