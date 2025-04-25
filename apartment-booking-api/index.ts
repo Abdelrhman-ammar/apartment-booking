@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv';
+import cors from 'cors';
 import connectToDatabase from './src/utils/connect-db';
 import userRoutes from './src/routes/user.routes';
 import apartmentRoutes from './src/routes/apartment.routes';
@@ -8,6 +9,7 @@ import notFoundEndpoint from './src/routes/not-found-endoint.routs';
 dotenv.config()
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 // ----------------- all api routes -----------------------
 app.use('/api/users', userRoutes)
