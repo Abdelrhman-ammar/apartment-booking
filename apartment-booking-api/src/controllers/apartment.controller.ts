@@ -23,9 +23,11 @@ export const createApartment = async (req: Request, res: Response) => {
   }
 };
 
-export const getApartments = async (_req: Request, res: Response) => {
+export const getApartments = async (req: Request, res: Response) => {
   try {
-    const response = await apartmentService.getAllApartments();
+    const page = Math.max(Number(req.body.page) || 1, 1)
+    const limit = Math.min(Number(req.body.limit) || 10, 50)
+    const response = await apartmentService.getAllApartments(page, limit);
     res.status(response.status).json(response);
   } catch (error) {
     sendGeneralErrorResponse(res);

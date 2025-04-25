@@ -15,8 +15,8 @@ export class ApartmentService {
     };
   }
 
-  async getAllApartments() {
-    const apartments = await this.getAllApartmentObjects();
+  async getAllApartments(page: number, limit: number) {
+    const apartments = await this.getAllApartmentObjects(page, limit);
     return generateResponse({
       status: statusCodes.OK,
       data: apartments.map((a: Apartment) => a.serializedObject()),
@@ -115,8 +115,9 @@ export class ApartmentService {
   }
   
 
-  async getAllApartmentObjects() {
-    const apartments = await prisma.apartment.findMany({ include: { owner: true } });
+  async getAllApartmentObjects(page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    const apartments = await prisma.apartment.findMany({ skip, take: limit, include: { owner: true } });
     return apartments.map((a: ApartmentParams) => new Apartment(a));
   }
 
