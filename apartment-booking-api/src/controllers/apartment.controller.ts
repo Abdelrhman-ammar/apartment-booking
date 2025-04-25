@@ -25,8 +25,9 @@ export const createApartment = async (req: Request, res: Response) => {
 
 export const getApartments = async (req: Request, res: Response) => {
   try {
-    const page = Math.max(Number(req.body.page) || 1, 1)
-    const limit = Math.min(Number(req.body.limit) || 10, 50)
+    // Get parameters from query or body
+    const page = Math.max(Number(req.query?.page || req.body?.page) || 1, 1)
+    const limit = Math.min(Number(req.query?.limit || req.body?.limit) || 10, 50)
     const response = await apartmentService.getAllApartments(page, limit);
     res.status(response.status).json(response);
   } catch (error) {
