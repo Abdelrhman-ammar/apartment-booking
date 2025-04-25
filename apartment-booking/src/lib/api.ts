@@ -7,7 +7,6 @@ export async function getApartments(page: number = 1, limit: number = 10): Promi
     const response = await fetch(`${API_URL}/apartments?page=${page}&limit=${limit}`);
 
     const result = await response.json();
-    console.log(result)
     return { data: result.data || [], status: response.status };
   } catch (error) {
     console.error('Error fetching apartments:', error);
