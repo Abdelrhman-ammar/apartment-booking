@@ -30,7 +30,7 @@ export default function ApartmentCard({ apartment }: ApartmentCardProps) {
       <div className="p-4">
         <h3 className="text-xl font-semibold text-foreground mb-2">{unitName}</h3>
         <p className="text-foreground/70 mb-2">{location}</p>
-        <p className="text-primary font-bold mb-4">${price.toLocaleString()}</p>
+        <p className="text-primary font-bold mb-4">EGP {price.toLocaleString()}</p>
         <Link 
           href={`/apartment/${id}`}
           className="block w-full text-center bg-primary text-background py-2 rounded-md hover:bg-primary/90 transition-colors"

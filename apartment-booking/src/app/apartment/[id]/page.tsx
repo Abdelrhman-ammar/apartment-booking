@@ -66,7 +66,7 @@ export default async function ApartmentDetailPage({params}: ApartmentDetailPageP
             </div>
             <div className="mt-4 md:mt-0">
               <p className="text-2xl font-bold text-primary">
-                ${apartment.price.toLocaleString()}
+                EGP {apartment.price.toLocaleString()}
               </p>
               <p className="text-foreground/70">
                 {apartment.available ? "Available" : "Not Available"}
