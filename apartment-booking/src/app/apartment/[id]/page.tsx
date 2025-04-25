@@ -4,19 +4,23 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BackIcon, CheckIcon } from "@/components/Icons";
 
-export default async function ApartmentDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const paramters = await params
-  const id = Number(paramters.id)
-  
-  if (isNaN(id)) {
+interface ApartmentDetailPageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function ApartmentDetailPage({params}: ApartmentDetailPageProps) {
+  const resolvedParams = await params
+  const { id } = resolvedParams
+  const Id = Number(id)
+
+
+  if (isNaN(Id)) {
     notFound();
   }
 
-  const { data: apartment, status } = await getApartmentById(id);
+  const { data: apartment, status } = await getApartmentById(Id);
 
   if (!apartment || status !== 200) {
     notFound();
@@ -93,7 +97,7 @@ export default async function ApartmentDetailPage({
                 </li>
                 <li className="flex justify-between">
                   <span className="text-foreground/70">Area</span>
-                  <span className="font-medium">{apartment.area} sq ft</span>
+                  <span className="font-medium">{apartment.area} m</span>
                 </li>
               </ul>
             </div>

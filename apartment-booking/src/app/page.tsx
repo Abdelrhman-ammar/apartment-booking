@@ -9,10 +9,10 @@ const APARTMENTS_PER_PAGE = 3;
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const  { page } = await searchParams
-  const currentPage = Number(page) || 1;
+  const resolvedSearchParams = await searchParams;
+  const currentPage = Number(resolvedSearchParams?.page) || 1;
   const { data: apartments } = await getApartments(currentPage, APARTMENTS_PER_PAGE);
 
   const hasApartments = apartments && apartments.length > 0;

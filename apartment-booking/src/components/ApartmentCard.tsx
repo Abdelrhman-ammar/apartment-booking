@@ -7,7 +7,7 @@ interface ApartmentCardProps {
 }
 
 export default function ApartmentCard({ apartment }: ApartmentCardProps) {
-  const { id, unitName, location, price, images } = apartment;
+  const { id, unitName, location, price } = apartment;
 
   // Default image if none provided
   // const imageUrl = images && images.length > 10
