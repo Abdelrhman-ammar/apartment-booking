@@ -97,11 +97,23 @@
 			"item": [
 				{
 					"name": "Get Apartments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"page\": 1,\n    \"limit\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:8000/api/apartments/",
+							"raw": "http://localhost:8000/api/apartments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -109,8 +121,7 @@
 							"port": "8000",
 							"path": [
 								"api",
-								"apartments",
-								""
+								"apartments"
 							]
 						}
 					},
