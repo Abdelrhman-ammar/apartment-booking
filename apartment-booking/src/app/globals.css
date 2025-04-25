@@ -3,8 +3,8 @@
 :root {
   --background: #f8f9fa; /* very light background */
   --foreground: #003B73; /* deep blue for main text */
-  --primary: #5AC8D8;    /* light teal */
-  --secondary: #FF4C4C;  /* bright red */
+  --primary: #FF4C4C;    /* light teal */
+  --secondary: #5AC8D8;  /* bright red */
   --accent: #A0E5D9;     /* soft accent color */
 }
 
@@ -22,11 +22,4 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #003B73;
-    --foreground: #ededed;
-  }
 }
