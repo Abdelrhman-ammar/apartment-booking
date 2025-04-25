@@ -17,15 +17,28 @@ services:
     networks:
       - app-network
 
-  app:
+  api:
     build: ./apartment-booking-api
-    container_name: apartment-booking
+    container_name: apartment-booking-api
     env_file:
       - ./apartment-booking-api/.env
     ports:
       - "${API_PORT}:${API_PORT}"
     depends_on:
       - postgres
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  frontend:
+    build: ./apartment-booking
+    container_name: apartment-booking-frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api:${API_PORT}/api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
     restart: unless-stopped
     networks:
       - app-network
