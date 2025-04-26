@@ -62,8 +62,10 @@ apartment-booking-api/
 │   ├── models/              # Data models
 │   │   ├── apartment.ts
 │   │   └── user.ts
-│   ├── prisma/              # Prisma client
-│   │   └── client.ts
+│   ├── prisma/              # Prisma client and schema
+│   │   ├── client.ts
+│   │   ├── schema.prisma    # Database schema
+│   │   └── seed.ts          # Database seed script
 │   ├── routes/              # API routes
 │   │   ├── apartment.routes.ts
 │   │   ├── not-found-endoint.routs.ts
@@ -82,6 +84,28 @@ apartment-booking-api/
 ├── Dockerfile               # Docker configuration for backend
 ├── docker-entrypoint.sh     # Docker entry point script
 └── package.json             # Project dependencies and scripts
+```
+
+## Database Seeding
+
+The application includes a database seeding mechanism that populates the database with initial data for testing and development purposes. The seeding process is automatically executed when the Docker container starts, but only if it hasn't been run before (controlled by a flag file).
+
+### Seed Data
+
+The seed script creates the following data:
+
+#### User
+- User (name: Apdelrhman Ammar, email: abdelrhmanammar.cs@gmail.com, phone: 01122285075, password: password, role: USER)
+
+#### Apartments
+The seed script creates 20 different apartments with varied properties.
+
+### Running the Seed Manually
+
+You can manually run the seed script with the following command:
+
+```bash
+npm run prisma:seed
 ```
 
 ## Backend API Documentation

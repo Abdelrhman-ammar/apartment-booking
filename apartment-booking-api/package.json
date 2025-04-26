@@ -18,7 +18,8 @@
     "prestart": "npm run build",
     "start": "node dist/index.js",
     "preserve": "npm run build",
-    "serve": "npx tsc -w & nodemon dist/index.js"
+    "serve": "npx tsc -w & nodemon dist/index.js",
+    "prisma:seed": "ts-node src/prisma/seed.ts"
   },
   "prisma": {
     "schema": "./src/prisma/schema.prisma"
