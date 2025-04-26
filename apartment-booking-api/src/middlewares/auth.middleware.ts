@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt'
+import { verifyToken, handleExpiredToken } from '../utils/jwt'
 import { statusCodes } from '../utils/status-responses';
 import { generateResponse, sendGeneralErrorResponse } from '../utils/response';
 import { UserParams } from "../models/user";
@@ -44,7 +44,9 @@ export const authenticateUser = (req: AuthRequest, res: Response, next: NextFunc
         req.body.user = decoded;
         next();
     } catch (error) {
-        sendGeneralErrorResponse(res);
+        const handled = handleExpiredToken(error, res);
+        if (handled) return;
+        sendGeneralErrorResponse(res, 'Middleware');
         return;
     }
 };

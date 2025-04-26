@@ -29,12 +29,22 @@ export const generateResponse = ({ status, message, error, data }: ResponseParam
   return response;
 };
 
-export const sendGeneralErrorResponse = (res: Response): void => {
+export const sendGeneralErrorResponse = (res: Response, hint: string = ''): void => {
   const status = statusCodes.INTERNAL_SERVER_ERROR;
   res.status(status).json(
     generateResponse({
       status,
-      error: "General Error"
+      error: "General Error " + hint
+    })
+  );
+};
+
+export const jwtExpiredResponse = (res: Response): void => {
+  const status = statusCodes.UNAUTHORIZED;
+  res.status(status).json(
+    generateResponse({
+      status,
+      error: "Token expired"
     })
   );
 };
