@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { ApartmentService } from '../services/apartment.service';
-import { sendGeneralErrorResponse } from '../utils/response';
+import { sendGeneralErrorResponse, generateResponse } from '../utils/response';
 import { ValidationObject } from '../types/validation-object';
-import {UserParams} from "../models/user";
+import { Prisma } from "@prisma/client";
 
 const apartmentService = new ApartmentService();
+const generalErrorHint = 'Apartment';
 
 export const createApartment = async (req: Request, res: Response) => {
   try {
@@ -18,7 +19,19 @@ export const createApartment = async (req: Request, res: Response) => {
 
     res.status(response?.status || 500).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res);
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        const target = error.meta?.target;
+        const field = (Array.isArray(target) ? target[0] : null) || 'field';
+        const response = generateResponse({
+          status: 400,
+          error: `An apartment with this ${field} already exists.`
+        });
+        res.status(response.status).json(response);
+        return;
+      }
+    }
+    sendGeneralErrorResponse(res, generalErrorHint);
     console.error(error);
   }
 };
@@ -31,7 +44,7 @@ export const getApartments = async (req: Request, res: Response) => {
     const response = await apartmentService.getAllApartments(page, limit);
     res.status(response.status).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res);
+    sendGeneralErrorResponse(res, generalErrorHint);
     console.error(error);
   }
 };
@@ -42,7 +55,7 @@ export const getApartment = async (req: Request, res: Response) => {
     const response = await apartmentService.getApartmentById(apartmentId);
     res.status(response.status).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res);
+    sendGeneralErrorResponse(res, generalErrorHint);
     console.error(error);
   }
 };
@@ -54,7 +67,7 @@ export const filterApartments = async (req: Request, res: Response) => {
     res.status(response.status).json(response);
   } catch (error) {
     sendGeneralErrorResponse(res);
-    console.error(error);
+    console.error(error, generalErrorHint);
   }
 };
 
@@ -68,7 +81,7 @@ export const updateApartment = async (req: Request, res: Response) => {
     const response = await apartmentService.updateApartment(apartmentId, data, user.id, user.role);
     res.status(response.status).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res);
+    sendGeneralErrorResponse(res, generalErrorHint);
     console.error(error);
   }
 };
@@ -80,7 +93,7 @@ export const deleteApartment = async (req: Request, res: Response) => {
     const response = await apartmentService.deleteApartment(apartmentId, user.id, user.role);
     res.status(response.status).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res);
+    sendGeneralErrorResponse(res, generalErrorHint);
     console.error(error);
   }
 };

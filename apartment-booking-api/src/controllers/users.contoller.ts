@@ -5,9 +5,12 @@ import { comparePassword } from '../utils/hash'
 import { generateResponse, sendGeneralErrorResponse } from "../utils/response";
 import { statusCodes } from "../utils/status-responses";
 import { ValidationObject } from "../types/validation-object";
+import { Prisma } from "@prisma/client";
+
+const userService = new UserService();
+const generalErrorHint = 'Apartment';
 
 export const register = async (req: Request, res: Response) => {
-  const userService = new UserService();
     try {
       const userData = req.body
       const validationObject: ValidationObject = UserService.validate(userData);
@@ -17,25 +20,35 @@ export const register = async (req: Request, res: Response) => {
       }
       res.status(response?.status || 500).json(response);
     } catch (error) {
-      sendGeneralErrorResponse(res)
-      console.error(error)
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code === 'P2002') {
+          const target = error.meta?.target;
+          const field = (Array.isArray(target) ? target[0] : null) || 'field';
+          const response = generateResponse({
+            status: statusCodes.BAD_REQUEST,
+            error: `A user with this ${field} already exists.`
+          });
+          res.status(response.status).json(response);
+          return;
+        }
+      }
+      sendGeneralErrorResponse(res, generalErrorHint);
+      console.error(error);
     }
 };
 
 export const getUser = async (req: Request, res: Response) => {
-  const userService = new UserService();
   try {
     const userId = Number(req.params.id);
     const response = await userService.getUserById(userId);
     res.status(response.status).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res)
+    sendGeneralErrorResponse(res, generalErrorHint)
     console.error(error)
   }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const userService = new UserService();
   try {
     const email = req.body.email
     const password = req.body.password
@@ -49,7 +62,7 @@ export const login = async (req: Request, res: Response) => {
     const response = generateResponse({status: statusCodes.CREATED, data: {token}})
     res.status(response.status).json(response);
   } catch (error) {
-    sendGeneralErrorResponse(res)
+    sendGeneralErrorResponse(res, generalErrorHint)
     console.error(error)
   }
 };
