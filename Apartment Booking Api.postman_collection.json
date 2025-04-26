@@ -179,6 +179,36 @@
 					"response": []
 				},
 				{
+					"name": "Add Apartments Image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1f022c52-4e1e-40d0-b168-9f5dfca90177"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/images",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"images"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add Apartment",
 					"request": {
 						"method": "POST",
