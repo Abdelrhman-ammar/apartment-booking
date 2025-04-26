@@ -2,15 +2,11 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-# Install dependencies
+# Copy dependencies
 COPY package*.json ./
-RUN npm install
 
 # Copy application code
 COPY . .
-
-# Build the application
-RUN npm run build
 
 # Add entrypoint script
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh

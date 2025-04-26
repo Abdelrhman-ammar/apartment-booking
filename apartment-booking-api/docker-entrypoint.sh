@@ -1,6 +1,12 @@
 #!/bin/sh
 set -e
 
+# Install dependencies
+npm install
+
+# Generate Prisma client
+npx prisma generate
+
 # Run Prisma migrations
 echo "Running Prisma migrations..."
 npx prisma migrate deploy

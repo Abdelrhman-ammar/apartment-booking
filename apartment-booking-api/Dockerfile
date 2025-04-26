@@ -5,18 +5,11 @@ WORKDIR /app
 RUN apk add --no-cache openssl
 
 
-# Install dependencies
+# Copy dependencies
 COPY package*.json ./
-RUN npm install
 
 # Copy application code
 COPY . .
-
-# Generate Prisma client
-RUN npx prisma generate
-
-# Build the application
-RUN npm run build
 
 # Add migration script
 COPY ./docker-entrypoint.sh /docker-entrypoint.sh
