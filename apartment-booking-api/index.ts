@@ -4,16 +4,19 @@ import cors from 'cors';
 import connectToDatabase from './src/utils/connect-db';
 import userRoutes from './src/routes/user.routes';
 import apartmentRoutes from './src/routes/apartment.routes';
+import imageRoutes from './src/routes/image.routes';
 import notFoundEndpoint from './src/routes/not-found-endoint.routs';
 
 dotenv.config()
 const app = express()
 app.use(express.json())
 app.use(cors())
+app.use('/uploads', express.static('uploads'))
 
 // ----------------- all api routes -----------------------
 app.use('/api/users', userRoutes)
 app.use('/api/apartments', apartmentRoutes)
+app.use('/api/images', imageRoutes)
 app.get('/', (req, res) => {
   res.send('Hello from Express + Prisma + TypeScript!')
 })
