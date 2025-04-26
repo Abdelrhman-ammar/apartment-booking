@@ -541,3 +541,6 @@ The backend development server will be available at http://localhost:8000.
 ## License
 
 This project is licensed under the MIT License.
+![Screenshot from 2025-04-26 17-07-18](https://github.com/user-attachments/assets/8f5ef9c4-6232-4a46-b342-7db0ff5b138b)
+![Screenshot from 2025-04-26 17-07-07](https://github.com/user-attachments/assets/6c97318b-e2eb-407f-becf-701642643765)
+![Screenshot from 2025-04-26 17-06-48](https://github.com/user-attachments/assets/1ee4b6fb-2819-40fa-af7e-3bd67e404983)
