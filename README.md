@@ -500,7 +500,7 @@ The Docker Compose setup includes three services:
 ```bash
 cd apartment-booking
 npm install
-npm run dev
+npm run serve
 ```
 
 The frontend development server will be available at http://localhost:3000.
