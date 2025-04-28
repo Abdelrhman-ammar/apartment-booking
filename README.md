@@ -445,11 +445,11 @@ Create a `.env` file in the `apartment-booking-api` directory with the following
 
 ```
 # Database Configuration
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your_password
-POSTGRES_DB=apartment_booking
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=password
+POSTGRES_DB=partment-booking-db
 POSTGRES_PORT=5432
-DATABASE_URL=postgresql://postgres:your_password@postgres-db:5432/apartment_booking?schema=public
+DATABASE_URL=postgresql://admin:password@postgres-db:5432/partment-booking-db?schema=public
 
 # API Configuration
 API_PORT=8000
@@ -500,7 +500,7 @@ The Docker Compose setup includes three services:
 ```bash
 cd apartment-booking
 npm install
-npm run serve
+npm run dev
 ```
 
 The frontend development server will be available at http://localhost:3000.
@@ -512,7 +512,7 @@ cd apartment-booking-api
 npm install
 npx prisma generate
 npx prisma migrate dev
-npm run dev
+npm run serve
 ```
 
 The backend development server will be available at http://localhost:8000.
